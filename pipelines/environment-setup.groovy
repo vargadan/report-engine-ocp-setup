@@ -54,7 +54,7 @@ def rabbitMq(project) {
 
 
 def envSetup(project, appNames) {
-	appNames.each {
+	appNames.each { appName ->
 		sh "oc process -f templates/app-comp-template.yaml -p APP_NAME=${appName} -p PROJECT_NAME=${project} | oc create -f - -n ${project}"
 	}
 }
