@@ -74,14 +74,14 @@ objects:
           imagePullPolicy: Always
           livenessProbe:
             httpGet:
-              path: /
+              path: /health
               port: 8080
             initialDelaySeconds: 120
             timeoutSeconds: 3
           name: ${APP_NAME}
           readinessProbe:
             httpGet:
-              path: /
+              path: /health
               port: 8080
             initialDelaySeconds: 3
             timeoutSeconds: 3
