@@ -58,10 +58,8 @@ node {
 }
 
 def rabbitMq(project) {
-    sh "pwd"
-    sh "ls -la"
     sh "oc delete service,routes -l app=rabbitmq -n ${project}"
-    sh "oc process -f rabbitmq.yaml | oc create -f - -n ${project}"
+    sh "oc process -f templates/rabbitmq.yaml | oc create -f - -n ${project}"
 }
 
 
