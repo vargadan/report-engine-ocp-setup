@@ -1,0 +1,51 @@
+apiVersion: v1
+kind: Template
+metadata:
+  name: env-setup
+labels:
+  template: env-setup-jenkins
+  group: reportengine-env
+metadata:
+  annotations:
+    description: Creates Jenkins setup in CICD infrastructure
+    iconClass: icon-jenkins
+    tags: jenkins,env-setup
+  name: env-setup
+message: Jenkins pipelines to set environment for reportengine projects up.
+parameters:
+- description: Password for the Jenkins user.
+  displayName: Jenkins Password
+  value: password
+  name: JENKINS_PASSWORD
+  required: true
+- description: Git WebHook Secret
+  displayName: Git WebHook Secret
+  value: 01db74bb43c9d5f0
+  name: WEBHOOK_SECRET
+  required: true
+objects:
+# environment
+- apiVersion: v1
+  kind: BuildConfig
+  metadata:
+    labels:
+      app: ctr
+      name: ctr-environment-pipeline
+    name: ctr-environment-pipeline
+  spec:
+    runPolicy: SerialLatestOnly
+    source:
+      type: "Git"
+      git:
+        ref: master
+        uri: "https://github.com/vargadan/reporting-engine/"
+    strategy:
+      jenkinsPipelineStrategy:
+        jenkinsfilePath: openshift-setup/pipelines/environment-setup.groovy
+      type: JenkinsPipeline
+    triggers:
+      - github:
+          secret: ${WEBHOOK_SECRET}
+        type: GitHub
+  status:
+    lastVersion: 0

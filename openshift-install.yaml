@@ -1,0 +1,73 @@
+ansible_callback_facts_yaml: /.ansible/callback_facts.yaml
+ansible_inventory_path: /hosts
+ansible_log_path: /tmp/ansible.log
+deployment:
+  ansible_ssh_user: centos
+  hosts:
+  - connect_to: 34.249.136.123
+    hostname: 178.31.0.90
+    ip: 178.31.0.90
+    public_hostname: 34.249.136.123
+    public_ip: 34.249.136.123
+    roles:
+    - master
+    - etcd
+    - node
+  - connect_to: 52.211.81.129
+    hostname: 178.31.1.110
+    ip: 178.31.1.110
+    node_labels: '{''region'': ''infra''}'
+    public_hostname: 52.211.81.129
+    public_ip: 52.211.81.129
+    roles:
+    - node
+  - connect_to: 52.212.202.250
+    hostname: 178.31.1.215
+    ip: 178.31.1.215
+    node_labels: '{''region'': ''infra''}'
+    public_hostname: 52.212.202.250
+    public_ip: 52.212.202.250
+    roles:
+    - node
+  - connect_to: 34.244.251.138
+    hostname: 178.31.1.202
+    ip: 178.31.1.202
+    public_hostname: 34.244.251.138
+    public_ip: 34.244.251.138
+    roles:
+    - node
+  - connect_to: 34.244.212.2
+    hostname: 178.31.1.98
+    ip: 178.31.1.98
+    public_hostname: 34.244.212.2
+    public_ip: 34.244.212.2
+    roles:
+    - node
+  - connect_to: 52.18.206.151
+    hostname: 178.31.9.166
+    ip: 178.31.9.166
+    public_hostname: 52.18.206.151
+    public_ip: 52.18.206.151
+    roles:
+    - storage
+  - connect_to: 34.253.161.66
+    hostname: 178.31.9.112
+    ip: 178.31.9.112
+    public_hostname: 34.253.161.66
+    public_ip: 34.253.161.66
+    roles:
+    - storage
+  master_routingconfig_subdomain: apps.onebankintra.net
+  openshift_master_cluster_hostname: 34.249.136.123
+  openshift_master_cluster_public_hostname: master.ocp.onebankintra.net
+  proxy_exclude_hosts: ''
+  proxy_http: ''
+  proxy_https: ''
+  roles:
+    etcd: {}
+    master: {}
+    node: {}
+    storage: {}
+variant: origin
+variant_version: '3.6'
+version: v2

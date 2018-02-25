@@ -1,0 +1,211 @@
+apiVersion: v1
+kind: Template
+metadata:
+  name: cicd-jenkins
+labels:
+  template: cicd-jenkins
+  group: reportengine-cicd
+metadata:
+  annotations:
+    description: Creates Jenkins setup in CICD infrastructure
+    iconClass: icon-jenkins
+    tags: jenkins,cicd
+  name: cicd
+message: Jenkins CICD Pipelines for the services of the report engine
+parameters:
+- description: Password for the Jenkins user.
+  displayName: Jenkins Password
+  value: password
+  name: JENKINS_PASSWORD
+  required: true
+- description: DEV project name
+  displayName: DEV project name
+  value: dev
+  name: DEV_PROJECT
+  required: true
+- description: IT project name
+  displayName: IT project name
+  value: it
+  name: IT_PROJECT
+  required: true
+- description: Git WebHook Secret
+  displayName: Git WebHook Secret
+  value: 01db74bb43c9d5f0
+  name: WEBHOOK_SECRET
+  required: true
+objects:
+# order-manager
+- apiVersion: v1
+  kind: BuildConfig
+  metadata:
+    labels:
+      app: order-manager
+      name: order-manager-pipeline
+    name: order-manager-pipeline
+  spec:
+    runPolicy: SerialLatestOnly
+    source:
+      type: "Git"
+      git:
+        ref: master
+        uri: "https://github.com/vargadan/report-order-manager"
+    strategy:
+      jenkinsPipelineStrategy:
+        jenkinsfilePath: pipeline.groovy
+      type: JenkinsPipeline
+    triggers:
+      - github:
+          secret: ${WEBHOOK_SECRET}
+        type: GitHub
+  status:
+    lastVersion: 0
+#dummy-report-factory
+- apiVersion: v1
+  kind: BuildConfig
+  metadata:
+    labels:
+      app: dummy-report-factory
+      name: dummy-report-factory-pipeline
+    name: dummy-report-factory-pipeline
+  spec:
+    runPolicy: SerialLatestOnly
+    source:
+      type: "Git"
+      git:
+        ref: master
+        uri: "https://github.com/vargadan/dummy-report-factory"
+    strategy:
+      jenkinsPipelineStrategy:
+        jenkinsfilePath: pipeline.groovy
+      type: JenkinsPipeline
+    triggers:
+      - github:
+          secret: ${WEBHOOK_SECRET}
+        type: GitHub
+  status:
+    lastVersion: 0
+# report-uploader
+- apiVersion: v1
+  kind: BuildConfig
+  metadata:
+    labels:
+      app: report-uploader
+      name: report-uploader-pipeline
+    name: report-uploader-pipeline
+  spec:
+    runPolicy: SerialLatestOnly
+    source:
+      type: "Git"
+      git:
+        ref: master
+        uri: "https://github.com/vargadan/report-uploader"
+    strategy:
+      jenkinsPipelineStrategy:
+        jenkinsfilePath: pipeline.groovy
+      type: JenkinsPipeline
+    triggers:
+      - github:
+          secret: ${WEBHOOK_SECRET}
+        type: GitHub
+  status:
+    lastVersion: 0
+ #report-renderer
+- apiVersion: v1
+  kind: BuildConfig
+  metadata:
+    labels:
+      app: report-renderer
+      name: report-renderer-pipeline
+    name: report-renderer-pipeline
+  spec:
+    runPolicy: SerialLatestOnly
+    source:
+      type: "Git"
+      git:
+        ref: master
+        uri: "https://github.com/vargadan/report-renderer"
+    strategy:
+      jenkinsPipelineStrategy:
+        jenkinsfilePath: pipeline.groovy
+      type: JenkinsPipeline
+    triggers:
+      - github:
+          secret: ${WEBHOOK_SECRET}
+        type: GitHub
+  status:
+    lastVersion: 0
+# report-repository
+- apiVersion: v1
+  kind: BuildConfig
+  metadata:
+    labels:
+      app: report-repository
+      name: report-repository-pipeline
+    name: report-repository-pipeline
+  spec:
+    runPolicy: SerialLatestOnly
+    source:
+      type: "Git"
+      git:
+        ref: master
+        uri: "https://github.com/vargadan/report-repository"
+    strategy:
+      jenkinsPipelineStrategy:
+        jenkinsfilePath: pipeline.groovy
+      type: JenkinsPipeline
+    triggers:
+      - github:
+          secret: ${WEBHOOK_SECRET}
+        type: GitHub
+  status:
+    lastVersion: 0
+# identity-server
+- apiVersion: v1
+  kind: BuildConfig
+  metadata:
+    labels:
+      app: identity-server
+      name: identity-server-pipeline
+    name: identity-server-pipeline
+  spec:
+    runPolicy: SerialLatestOnly
+    source:
+      type: "Git"
+      git:
+        ref: master
+        uri: "https://github.com/vargadan/identity-server"
+    strategy:
+      jenkinsPipelineStrategy:
+        jenkinsfilePath: pipeline.groovy
+      type: JenkinsPipeline
+    triggers:
+      - github:
+          secret: ${WEBHOOK_SECRET}
+        type: GitHub
+  status:
+    lastVersion: 0
+# all
+- apiVersion: v1
+  kind: BuildConfig
+  metadata:
+    labels:
+      app: ctr
+      name: ctr-it-prod-pipeline
+    name: ctr-it-prod-pipeline
+  spec:
+    runPolicy: SerialLatestOnly
+    source:
+      type: "Git"
+      git:
+        ref: master
+        uri: "uri: "https://github.com/vargadan/reporting-engine/"
+    strategy:
+      jenkinsPipelineStrategy:
+        jenkinsfilePath: openshift-setup/pipelines/deploy-all-to-it-and-prod.groovy
+      type: JenkinsPipeline
+    triggers:
+      - github:
+          secret: ${WEBHOOK_SECRET}
+        type: GitHub
+  status:
+    lastVersion: 0

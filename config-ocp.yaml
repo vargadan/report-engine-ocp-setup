@@ -1,0 +1,53 @@
+prefix: 'ocp'
+
+# Username and password for Red Hat Customer Portal
+rhsm_user: 'daniel.varga@kellogg.ox.ac.uk'
+rhsm_password: 'n2L-TEA-xvv-h9D'
+# Pool which shall be used to register the instances
+rhsm_pool: '30 Day Self-Supported Red Hat OpenShift Container Platform, 2-Core Evaluation'
+# Path to a RHEL image on local machine, downloaded from Red Hat Customer Portal
+rhel_image_path: '/home/dani/rhel-guest-image-7.3-35.x86_64.qcow2'
+# Choose to delete or retain the clean image during teardown
+delete_image: false
+# Choose to delete or retain the gold image during teardown
+delete_gold_image: false
+# Project ID and main zone settings for Google Cloud
+gcloud_project: 'ocp-178'
+gcloud_zone: 'us-central1-a'
+# Public DNS domain which will be configured in Google Cloud DNS
+public_hosted_zone: 'vargadaniel.net'
+openshift_master_cluster_public_hostname: 'master.{{ public_hosted_zone }}'
+openshift_master_cluster_hostname: 'internal-master.{{ public_hosted_zone }}'
+wildcard_zone: 'apps.{{ public_hosted_zone }}'
+# Paths on the local file system for the certificate files. If empty, self-signed
+master_https_key_file: ''
+master_https_cert_file: ''
+# How many instances should be created for each group
+master_instance_group_size: 1
+infra_node_instance_group_size: 2
+node_instance_group_size: 2
+# Machine types
+bastion_machine_type: g1-small
+master_machine_type: n1-standard-2
+node_machine_type: n1-standard-2
+# OpenShift deployment type
+openshift_deployment_type: origin
+containerized: false
+# OpenShift SDN selection
+# options are 'redhat/openshift-ovs-subnet', 'redhat/openshift-ovs-multitenant'
+os_sdn_network_plugin_name: 'redhat/openshift-ovs-subnet'
+# Deploy OpenShift Metrics
+openshift_hosted_metrics_deploy: false
+openshift_hosted_metrics_storage_volume_size: 10Gi
+
+
+# Disk sizes in GB
+bastion_disk_size: 10
+master_boot_disk_size: 10
+node_boot_disk_size: 10
+node_docker_disk_size: 20
+node_openshift_disk_size: 25
+
+# Custom VPC Subnet, example value: '10.160.0.0/20'
+# Default value is empty, when random subnet in form of 10.x.0.0/20 will be used
+gce_vpc_custom_subnet_cidr: ''

@@ -1,0 +1,61 @@
+apiVersion: v1
+kind: Template
+metadata:
+  name: cicd-jenkins
+labels:
+  template: cicd-jenkins
+  group: reportengine-cicd
+metadata:
+  annotations:
+    description: Creates Jenkins setup in CICD infrastructure
+    iconClass: icon-jenkins
+    tags: jenkins,cicd
+  name: cicd
+message: Jenkins CICD Pipelines for the services of the report engine
+parameters:
+- description: Password for the Jenkins user.
+  displayName: Jenkins Password
+  value: password
+  name: JENKINS_PASSWORD
+  required: true
+- description: DEV project name
+  displayName: DEV project name
+  value: dev
+  name: DEV_PROJECT
+  required: true
+- description: QA project name
+  displayName: QA project name
+  value: qa
+  name: QA_PROJECT
+  required: true
+- description: Git WebHook Secret
+  displayName: Git WebHook Secret
+  value: 01db74bb43c9d5f0
+  name: WEBHOOK_SECRET
+  required: true
+objects:
+# identity-server
+- apiVersion: v1
+  kind: BuildConfig
+  metadata:
+    labels:
+      app: identity-server
+      name: identity-server-pipeline
+    name: identity-server-pipeline
+  spec:
+    runPolicy: SerialLatestOnly
+    source:
+      type: "Git"
+      git:
+        ref: master
+        uri: "https://github.com/vargadan/identity-server"
+    strategy:
+      jenkinsPipelineStrategy:
+        jenkinsfilePath: pipeline.groovy
+      type: JenkinsPipeline
+    triggers:
+      - github:
+          secret: ${WEBHOOK_SECRET}
+        type: GitHub
+  status:
+    lastVersion: 0
