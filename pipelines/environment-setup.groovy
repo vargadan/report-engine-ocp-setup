@@ -7,7 +7,7 @@ node {
 	def APP_5 = "report-repository"
 	def APP_6 = "report-uploader"
   
-  	def DEV_PROJECT = "ctr-it"
+  	def DEV_PROJECT = "ctr-dev"
    	def IT_PROJECT = "ctr-it"
    	def PROD_PROJECT = "ctr-prod"
    	
