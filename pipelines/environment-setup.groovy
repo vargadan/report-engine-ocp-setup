@@ -25,23 +25,26 @@ node {
 	}       
    	
    	stage('DEV setup') {
-		deleteAll();
+		deleteAll(DEV_PROJECT);
         rabbitMq(DEV_PROJECT);
+		envSetup(DEV_PROJECT, APPS);
    	}
    	
    	stage('IT setup') {
-		deleteAll();
+		deleteAll(IT_PROJECT);
         rabbitMq(IT_PROJECT);
+		envSetup(IT_PROJECT, APPS);
    	}
 
    	stage('PROD setup') {
-		deleteAll();
+		deleteAll(PROD_PROJECT);
         rabbitMq(PROD_PROJECT);
+		envSetup(PROD_PROJECT, APPS);
    	}
 
 }
 
-def deleteAll() {
+def deleteAll(project) {
 	sh "oc delete deploymentconfig,service,routes --all -n ${project}"
 }
 
