@@ -317,3 +317,21 @@ rules:
   - get
   - list
   - watch
+- apiGroups:
+  - image.openshift.io
+  - ""
+  attributeRestrictions: null
+  resources:
+  - imagestreams/layers
+  verbs:
+  - get
+  - update
+- apiGroups:
+  - image.openshift.io
+  - ""
+  attributeRestrictions: null
+  resources:
+  - imagestreams
+  verbs:
+  - get
+  - create
