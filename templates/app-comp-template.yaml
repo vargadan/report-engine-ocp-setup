@@ -47,7 +47,7 @@ objects:
       app: ${APP_NAME}
   spec:
     port:
-      targetPort: management-console
+      targetPort: 8080
     to:
       kind: Service
       name: ${APP_NAME}
